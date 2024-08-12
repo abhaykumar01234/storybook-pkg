@@ -17,3 +17,6 @@ jobs:
       uses: bitovi/github-actions-react-to-github-pages@v1.2.4
       with:
         path: storybook-static # change to your build folder
+        install_command: pnpm install
+        build_command: build-storybook
+        cache: true
