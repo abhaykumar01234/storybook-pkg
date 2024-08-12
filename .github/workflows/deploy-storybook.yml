@@ -10,14 +10,27 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  deploy-storybook:
     runs-on: ubuntu-latest
     steps:
-    - id: build-publish
-      uses: bitovi/github-actions-react-to-github-pages@v1.2.4
-      with:
-        path: storybook-static # change to your build folder
-        install_command: pnpm install
-        build_command: build-storybook
-        cache: true
-        
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Node.JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - id: build-publish
+        uses: bitovi/github-actions-react-to-github-pages@v1.2.4
+        with:
+          path: storybook-static # change to your build folder
+          install_command: pnpm install
+          build_command: build-storybook
+          caching: true
