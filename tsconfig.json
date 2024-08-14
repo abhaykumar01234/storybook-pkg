@@ -22,6 +22,8 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitOverride": false,
-    "allowSyntheticDefaultImports": true
-  }
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "."
+  },
+  "include": ["src", "ui", "vite.config.ts"]
 }

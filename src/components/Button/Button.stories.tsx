@@ -12,6 +12,5 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     children: "My Button",
-    onClick: () => alert("My name is Abhay"),
   },
 };
