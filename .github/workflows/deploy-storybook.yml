@@ -1,4 +1,4 @@
-name: Deploy Storybook
+name: Deploy Storybook to Pages
 on:
   push:
     branches:
@@ -9,12 +9,29 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy-storybook:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache pnpm modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -27,10 +44,18 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-      - id: build-publish
-        uses: bitovi/github-actions-react-to-github-pages@v1.2.4
+      
+      - name: Build
+        run: "pnpm build"
+        env:
+          NODE_ENV: production
+
+      - name: Build Storybook
+        run: "pnpm build-storybook"
+        env: 
+          NODE_ENV: production
+
+      - name: Build and deploy Storybook
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: storybook-static # change to your build folder
-          install_command: pnpm install
-          build_command: build-storybook
-          caching: true
+          publish_dir: ./storybook-static
