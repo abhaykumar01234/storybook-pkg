@@ -24,3 +24,8 @@ dist-ssr
 *.sw?
 
 storybook-static
+
+## Panda
+styled-system
+styled-system-studio
+ui

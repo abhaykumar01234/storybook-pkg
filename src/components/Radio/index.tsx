@@ -1,13 +1,10 @@
 import { type ComponentProps } from "react";
+import { cx, css } from "ui/css";
 
 export type RadioProps = Omit<ComponentProps<"input">, "type">;
 
-export const Radio = ({ style = {}, ...rest }: RadioProps) => {
-  return (
-    <input
-      type="radio"
-      style={{ ...style, accentColor: "darkred", scale: "1.2" }}
-      {...rest}
-    />
-  );
+const radioCSS = css({ accentColor: "darkred", scale: "1.2" });
+
+export const Radio = ({ className = "", ...rest }: RadioProps) => {
+  return <input type="radio" className={cx(radioCSS, className)} {...rest} />;
 };
